@@ -1,4 +1,3 @@
-
 #pragma GCC optimize(2)
 #pragma GCC optimize("Ofast")
 #pragma GCC optimize("inline","fast-math","unroll-loops","no-stack-protector")
@@ -20,10 +19,6 @@ void setIO(string s)
   freopen((s + ".in").c_str(), "r", stdin);
   freopen((s + ".out").c_str(), "w", stdout);
 }
-//shortest path chooser
-static constexpr ll INF = (ll)1e18;
-static constexpr ll NINF = -(ll)1e18;
-static constexpr int INVALID = -1;
 #define overload5(_1,_2,_3,_4,_5,name,...) name
 #define overload4(_1,_2,_3,_4,name,...) name
 #define overload3(_1,_2,_3,name,...) name
@@ -357,6 +352,7 @@ void __print(const std::tuple<Args...>& t) {
     }, t);
     cout << ")";
 }
+
 // ──────────────────────────────────────────────────────────────────────────
 // Bitwise functions
 // ──────────────────────────────────────────────────────────────────────────
@@ -422,8 +418,10 @@ V<V<T>> readGrid(int H, int W, bool withSpaces = false) {
     return grid;
 }
 
-
-
+//shortest path chooser
+static constexpr ll INF = (ll)1e18;
+static constexpr ll NINF = -(ll)1e18;
+static constexpr int INVALID = -1;
 template<typename T, T INFV = numeric_limits<T>::max()/2, int INV = INVALID>
 struct shortest_path {
     int V, E;
@@ -904,5 +902,4 @@ vector<T> operator+(const vector<T>& x, const vector<T>& y) {
 
 int main() 
 {
-        
 }

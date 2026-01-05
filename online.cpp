@@ -1,9 +1,3 @@
-#pragma GCC optimize(2)
-#pragma GCC optimize("Ofast")
-#pragma GCC optimize("inline","fast-math","unroll-loops","no-stack-protector")
-#pragma GCC diagnostic error "-fwhole-program"
-#pragma GCC diagnostic error "-fcse-skip-blocks"
-#pragma GCC diagnostic error "-funsafe-loop-optimizations"
 #include <bits/stdc++.h>
 using namespace std;
 struct IoSetup {
@@ -46,17 +40,14 @@ void setIO(string s)
 #define rall2(i,a) rbegin(i),rbegin(i)+a
 #define rall3(i,a,b) rbegin(i)+a,rbegin(i)+b
 #define rall(...) overload3(__VA_ARGS__,rall3,rall2,rall1)(__VA_ARGS__)
-#define len(x) (int)(x).size()
+#define len(x) (ll)(x).size()
 #define sum(...) accumulate(all(__VA_ARGS__),0LL)
-#define uniq(vec) sort(all(vec)); vec.erase(unique(all(vec)),end(vec))
 #define rev(vec) reverse(vec.begin(), vec.end())
 #define elif else if
 #define pb push_back
 #define eb emplace_back
 #define lexi lexicographical_compare
-#define Test int t; cin >> t; while(t--)
-#define YES cout<<"Yes"<<endl
-#define NO cout<<"No"<<endl
+#define Test int testing; cin >> testing; while(testing--)
 #define dbg(...) cout << #__VA_ARGS__ << " = ", _print(__VA_ARGS__)
 #define sint(...) int __VA_ARGS__; in(__VA_ARGS__)
 #define sll(...) ll __VA_ARGS__; in(__VA_ARGS__)
@@ -84,29 +75,13 @@ void setIO(string s)
 #define rub(v,target) upper_bound(rall(v), target) //Equivalent to finding the largest element smaller than or equal to target
 #define ubset(s,target) s.upper_bound(target)
 // ----------------------------------------------------------------------------------------
-//math macros
-#define manhdist(x1,y1,x2,y2) abs(x1-x2)+abs(y1-y2)
 #define digitcount(n) ((n) == 0 ? 1 : (int)log10(abs(n)) + 1)
 // ----------------------------------------------------------------------------------------
 //string macros
 #define str(x) to_string(x)
-#define tolower(s) transform(s.begin(), s.end(), s.begin(), ::tolower)
-
+#define tolower(s) transform(all(s),::tolower)
+#define toupper(s) transform(all(s),::toupper)
 // ----------------------------------------------------------------------------------------
-//array macros
-#define cleantable(m,v) memset(m,v,sizeof(m));
-// ----------------------------------------------------------------------------------------
-//character macros
-#define ctoi(c) ((c) - '0')
-// ----------------------------------------------------------------------------------------
-//bool isPower2 = (L & (L-1)) == 0;
-// ----------------------------------------------------------------------------------------
-//recursion macros
-#define rfun(name, ret_type, ...) \
-    std::function<ret_type(__VA_ARGS__)> name = [&](__VA_ARGS__) -> ret_type
-//
-#define print_range(v, i, j) copy((v).begin() + (i), (v).begin() + (j), ostream_iterator<decltype((v)[0])>(cout, " "))
-//
 const int dx4[4] = {1, 0, -1, 0};
 const int dy4[4] = {0, 1, 0, -1};
 const int dx8[8] = {1, 1, 0, -1, -1, -1, 0, 1};
@@ -900,6 +875,7 @@ vector<T> operator+(const vector<T>& x, const vector<T>& y) {
     return r;
 }
 
-int main() 
+int main()
 {
+
 }

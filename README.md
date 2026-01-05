@@ -1,2 +1,2 @@
 # contest-template
-for cf, atcoder grinds
+All my templates used for various contests.

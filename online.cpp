@@ -139,7 +139,6 @@ template<typename T>
 using maxpq = priority_queue<T>;
 template<typename T>
 using minpq = priority_queue<T, vector<T>, greater<T>>;
-template <class T> std::vector<T> sort_unique(std::vector<T> vec) { sort(vec.begin(), vec.end()), vec.erase(unique(vec.begin(), vec.end()), vec.end()); return vec; }
 //scan
 inline void scan() {}
 inline void scan(int &a) { std::cin >> a; }

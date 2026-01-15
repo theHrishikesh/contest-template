@@ -10,8 +10,8 @@ struct IoSetup {
 } iosetup;
 void setIO(string s)
 {
-  freopen((s + ".in").c_str(), "r", stdin);
-  freopen((s + ".out").c_str(), "w", stdout);
+freopen((s + ".in").c_str(), "r", stdin);
+freopen((s + ".out").c_str(), "w", stdout);
 }
 #define overload5(_1,_2,_3,_4,_5,name,...) name
 #define overload4(_1,_2,_3,_4,name,...) name
@@ -104,6 +104,7 @@ using vii = vector<int>;
 using vvii = vector<vii>;
 using vecs = vector<string>;
 // *** Pair shortcuts ***
+using P = pair<ll,ll>;
 using pll = pair<ll,ll>;
 using pdd = pair<ld,ld>;
 using pii = pair<int,int>;
@@ -364,9 +365,59 @@ ll nextPow2(ll x) {
     if (x <= 0) return 1;
     return 1LL << (topbit(x) + 1);  // always the next power of 2
 }
-// ──────────────────────────────────────────────────────────────────────────
-// Graph Algorithms
-// ──────────────────────────────────────────────────────────────────────────
+
+
+/*Convex Hull*/
+
+// Vector subtraction: b -> a
+P sub(const P& a, const P& b) {
+    return {a.first - b.first, a.second - b.second};
+}
+
+// Cross product of two vectors
+ll cross_vec(const P& a, const P& b) {
+    return a.first * b.second - a.second * b.first;
+}
+
+// Cross product (OA x OB)
+ll cross(const P& O, const P& A, const P& B) {
+    return cross_vec(sub(A, O), sub(B, O));
+}
+
+vpll convex_hull(vpll pts) {
+    int n = pts.size();
+    if (n <= 1) return pts;
+
+    sort(pts.begin(), pts.end());
+    pts.erase(unique(pts.begin(), pts.end()), pts.end());
+
+    vpll hull;
+
+    // Lower hull
+    for (const auto& p : pts) {
+        while (hull.size() >= 2 &&
+            cross(hull[hull.size()-2], hull.back(), p) <= 0) {
+            hull.pop_back();
+        }
+        hull.push_back(p);
+    }
+
+    // Upper hull
+    int lower_size = hull.size();
+    for (int i = (int)pts.size() - 2; i >= 0; i--) {
+        while ((int)hull.size() > lower_size &&
+            cross(hull[hull.size()-2], hull.back(), pts[i]) <= 0) {
+            hull.pop_back();
+        }
+        hull.push_back(pts[i]);
+    }
+
+    hull.pop_back(); // remove duplicate start point
+    return hull;
+}
+
+/* Graph Algorithms */
+
 //Quick Graph Builder:
 vvll build_adj(ll n, ll m, ll base=1,bool directed = false){
     vvll adj(n + 1);
@@ -622,7 +673,7 @@ struct SCC
     }
 };
 // DSU Algorithm
-  struct DSU {
+struct DSU {
     vector<ll> parent, size;
     vector<ll> diff_weight;   // weight[x] - weight[parent[x]]
     ll component_count;
@@ -704,31 +755,34 @@ struct SCC
         return size[leader(x)];
     }
 };
-// ──────────────────────────────────────────────────────────────────────────
-// Math Algos
-// ──────────────────────────────────────────────────────────────────────────
+
+
+
+/*Math Algorithms*/
+
 //floor div template
 template <typename T>
 T floor(T a, T b) {
-  return a / b - (a % b && (a ^ b) < 0);
+return a / b - (a % b && (a ^ b) < 0);
 }
 //ceil div template
 template <typename T>
 T ceil(T x, T y) {
-  return floor(x + y - 1, y);
+return floor(x + y - 1, y);
 }
 //balanced modulo or Euclidean modulo (out normal modulo)
 template <typename T>
 T bmod(T x, T y) {
-  return x - y * floor(x, y);
+return x - y * floor(x, y);
 }
 // gives a quotient reminder pair for a div
 template <typename T>
 pair<T, T> divmod(T x, T y) {
-  T q = floor(x, y);
-  return {q, x - q * y};
+T q = floor(x, y);
+return {q, x - q * y};
 }
 
+//primes upto
 const int residues[] = {1, 7, 11, 13, 17, 19, 23, 29};
 vll primes_upto(ll n) 
 {
@@ -794,7 +848,7 @@ vll all_divisors(ll n) {
 
 string to_base(ll a,ll b)
 {
-  if (b<2 || b>36) throw invalid_argument("base out of range");
+if (b<2 || b>36) throw invalid_argument("base out of range");
     if (a == 0) return "0";
     static const char* digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     string s;
@@ -806,9 +860,14 @@ string to_base(ll a,ll b)
     reverse(all(s));
     return s;
 }
-// ──────────────────────────────────────────────────────────────────────────────
-// modint<998244353>
-// ──────────────────────────────────────────────────────────────────────────────
+template <typename T>
+vector<T> operator+(const vector<T>& x, const vector<T>& y) {
+    vector<T> r = x;
+    r.insert(r.end(), y.begin(), y.end());
+    return r;
+}
+
+/*modint template */
 template<ll M>
 struct modint {
     ll v;
@@ -865,14 +924,26 @@ struct modint {
         ll t; is >> t; x = modint(t); return is;
     }
 };
-
 static constexpr ll MOD = 998244353;
 using mint = modint<MOD>;
-template <typename T>
-vector<T> operator+(const vector<T>& x, const vector<T>& y) {
-    vector<T> r = x;
-    r.insert(r.end(), y.begin(), y.end());
-    return r;
+
+/*Binomial Templates*/
+vector<mint> fact, invfact;
+void init_nCr(ll N) {
+    fact.resize(N + 1);
+    invfact.resize(N + 1);
+
+    fact[0] = 1;
+    for (ll i = 1; i <= N; i++)
+        fact[i] = fact[i - 1] * i;
+
+    invfact[N] = inv(fact[N]);
+    for (ll i = N; i > 0; i--)
+        invfact[i - 1] = invfact[i] * i;
+}
+mint nCr(ll n, ll r) {
+    if (r < 0 || r > n) return 0;
+    return fact[n] * invfact[r] * invfact[n - r];
 }
 
 int main()

@@ -179,7 +179,6 @@ inline void in(Head &head, Tail &...tail) {
     in(tail...);
 }
 //print functions
-inline void print() { std::cout << ' '; }
 inline void print(const bool &a) { std::cout << a; }
 inline void print(const int &a) { std::cout << a; }
 inline void print(const unsigned &a) { std::cout << a; }
@@ -261,11 +260,16 @@ inline void out(const T &t) {
     std::cout << '\n';
 }
 template <class Head, class... Tail>
-inline void out(const Head &head, const Tail &...tail) {
+inline void out(const Head &head, const Tail &... tail) {
     print(head);
-    std::cout << ' ';
-    out(tail...);
+    if constexpr (sizeof...(tail) > 0) {
+        std::cout << ' ';
+        out(tail...);
+    } else {
+        std::cout << '\n';
+    }
 }
+
 template<typename T>
 void __print(const T &x) { cout << x; }
 
@@ -943,9 +947,4 @@ void init_nCr(ll N) {
 mint nCr(ll n, ll r) {
     if (r < 0 || r > n) return 0;
     return fact[n] * invfact[r] * invfact[n - r];
-}
-
-int main()
-{
-
 }

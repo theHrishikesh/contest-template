@@ -372,6 +372,50 @@ ll nextPow2(ll x) {
 // ──────────────────────────────────────────────────────────────────────────
 // Range Query Data Structures
 // ──────────────────────────────────────────────────────────────────────────
+//Segment Tree
+struct SegTree {
+    ll n;
+    vll tree;
+
+    SegTree(ll _n) {
+        n = _n;
+        tree.assign(4*n, 0);
+    }
+
+
+    void build(ll node, ll l, ll r, vll &a) {
+        if (l == r) {
+            tree[node] = a[l];
+            return;
+        }
+        ll mid = (l + r) / 2;
+        build(2*node, l, mid, a);
+        build(2*node+1, mid+1, r, a);
+        tree[node] = tree[2*node] + tree[2*node+1];
+    }
+
+
+    ll query(ll node, ll l, ll r, ll ql, ll qr) {
+        if (qr < l || r < ql) return 0;              
+        if (ql <= l && r <= qr) return tree[node];  
+        ll mid = (l + r) / 2;
+        return query(2*node, l, mid, ql, qr)
+            + query(2*node+1, mid+1, r, ql, qr);
+    }
+
+
+    void update(ll node, ll l, ll r, ll pos, ll val) {
+        if (l == r) {
+            tree[node] = val;
+            return;
+        }
+        ll mid = (l + r) / 2;
+        if (pos <= mid) update(2*node, l, mid, pos, val);
+        else update(2*node+1, mid+1, r, pos, val);
+        tree[node] = tree[2*node] + tree[2*node+1];
+    }
+};
+//Wavelet Tree
 struct WaveletTree {
     long long lo, hi;
     WaveletTree *l, *r;
@@ -794,14 +838,14 @@ struct SCC
         }
     }
 };
-// DSU Algorithm
-struct DSU {
+// Weighted DSU Algorithm
+struct WDSU {
     vector<ll> parent, size;
     vector<ll> diff_weight;   // weight[x] - weight[parent[x]]
     ll component_count;
     ll max_comp_size;
 
-    DSU(ll n)
+    WDSU(ll n)
     {
         parent.resize(n);
         size.assign(n, 1);
@@ -881,7 +925,20 @@ struct DSU {
 
 
 /*Math Algorithms*/
-
+// fast modular exponentiation
+ll modpow(ll base, ll exp, ll mod)
+{
+    ll result = 1;
+    base %= mod;
+    while (exp > 0)
+    {
+        if (exp & 1)
+            result = (result * base) % mod;
+        base = (base * base) % mod;
+        exp >>= 1;
+    }
+    return result;
+}
 //floor div template
 template <typename T>
 T floor(T a, T b) {

@@ -45,6 +45,7 @@ freopen((s + ".out").c_str(), "w", stdout);
 #define rev(vec) reverse(vec.begin(), vec.end())
 #define elif else if
 #define pb push_back
+#define pf push_front
 #define eb emplace_back
 #define lexi lexicographical_compare
 #define Test int testing; cin >> testing; while(testing--)
@@ -1179,4 +1180,8 @@ void init_nCr(ll N) {
 mint nCr(ll n, ll r) {
     if (r < 0 || r > n) return 0;
     return fact[n] * invfact[r] * invfact[n - r];
+}
+
+int main()
+{
 }

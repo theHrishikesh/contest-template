@@ -61,9 +61,11 @@ freopen((s + ".out").c_str(), "w", stdout);
 #define svec(type, n, v) vector<type> v(n); scan(v)
 #define s1vll(n,v) vll v(n + 1); rep(i, 1, n + 1) cin >> v[i];
 #define s1vii(n,v) vii v(n + 1); rep(i, 1, n + 1) cin >> v[i];
-#define uniq(x) sort(all(x)), x.erase(unique(all(x)), x.end()), x.shrink_to_fit()
+#define uniq(x) x.erase(unique(all(x)), x.end()), x.shrink_to_fit()
 #define asc(x) sort(all(x))
 #define desc(x) sort(all(x),greater<>())
+#define fi first
+#define se second
 // ----------------------------------------------------------------------------------------
 //binarySearch macros
 // ----------------------------------------------------------------------------------------
@@ -80,8 +82,7 @@ freopen((s + ".out").c_str(), "w", stdout);
 // ----------------------------------------------------------------------------------------
 //string macros
 #define str(x) to_string(x)
-#define tolower(s) transform(all(s),::tolower)
-#define toupper(s) transform(all(s),::toupper)
+
 // ----------------------------------------------------------------------------------------
 const int dx4[4] = {1, 0, -1, 0};
 const int dy4[4] = {0, 1, 0, -1};
@@ -131,6 +132,8 @@ using stkint = stack<int>;
 using stkll = stack<ll>;
 using stkpii = stack<pii>;
 using stkpll = stack<pll>;
+static constexpr ll MOD9 = 998244353;
+static constexpr ll MODe = 1000000007;
 // ----------------------------------------------------------------------------------------
 template<class T> auto vmin(const T& a){ return *min_element(all(a)); }
 template<class T> auto vmax(const T& a){ return *max_element(all(a)); }
@@ -140,6 +143,61 @@ template<typename T>
 using maxpq = priority_queue<T>;
 template<typename T>
 using minpq = priority_queue<T, vector<T>, greater<T>>;
+//helpers
+ll modulo(ll n, ll MOD)
+{
+    n %= MOD;
+    if (n < 0) n += MOD;
+    return n;
+}
+ll pow10(ll n, ll m)
+{
+    n %= m;
+    vll pw(n + 1);
+    pw[0] = 1;
+    rep(i,1,n + 1) pw[i] = (pw[i - 1] * 10) % m;
+
+    return pw[n];
+}
+/*Math Algorithms*/
+// fast modular exponentiation
+ll modpow(ll base, ll exp, ll mod)
+{
+    ll result = 1;
+    base %= mod;
+    while (exp > 0)
+    {
+        if (exp & 1)
+            result = (result * base) % mod;
+        base = (base * base) % mod;
+        exp >>= 1;
+    }
+    return result;
+}
+ll modinv(ll a , ll mod) {
+    return modpow(a, mod - 2,mod);
+}
+//floor div template
+template <typename T>
+T floor(T a, T b) {
+return a / b - (a % b && (a ^ b) < 0);
+}
+//ceil div template
+template <typename T>
+T ceil(T x, T y) {
+return floor(x + y - 1, y);
+}
+//balanced modulo or Euclidean modulo (out normal modulo)
+template <typename T>
+T bmod(T x, T y) {
+return x - y * floor(x, y);
+}
+// gives a quotient reminder pair for a div
+template <typename T>
+pair<T, T> divmod(T x, T y) {
+T q = floor(x, y);
+return {q, x - q * y};
+}
 //scan
 inline void scan() {}
 inline void scan(int &a) { std::cin >> a; }
@@ -288,6 +346,16 @@ void __print(const vector<T> &v) {
     cout << "]";
 }
 template<typename T>
+void __print(const deque<T> &v) {
+    cout << "[";
+    for (size_t i = 0; i < v.size(); ++i) {
+        __print(v[i]);
+        if (i + 1 != v.size()) cout << ", ";
+    }
+    cout << "]";
+}
+
+template<typename T>
 void __print(const set<T> &v) {
     cout << "{";
     bool first = true;
@@ -332,7 +400,6 @@ void __print(const std::tuple<Args...>& t) {
     }, t);
     cout << ")";
 }
-
 // ──────────────────────────────────────────────────────────────────────────
 // Bitwise functions
 // ──────────────────────────────────────────────────────────────────────────
@@ -364,12 +431,10 @@ template <typename T>
 inline T kth_bit(int k) { return T(1) << k; }
 template <typename T>
 inline bool has_kth_bit(T x, int k) { return (x >> k) & 1; }
-
 ll nextPow2(ll x) {
     if (x <= 0) return 1;
     return 1LL << (topbit(x) + 1);  // always the next power of 2
 }
-
 // ──────────────────────────────────────────────────────────────────────────
 // Range Query Data Structures
 // ──────────────────────────────────────────────────────────────────────────
@@ -441,8 +506,8 @@ struct WaveletTree {
 
 private:
     void build(vector<long long>::iterator from,
-               vector<long long>::iterator to,
-               long long _lo, long long _hi) {
+            vector<long long>::iterator to,
+            long long _lo, long long _hi) {
 
         lo = _lo;
         hi = _hi;
@@ -512,11 +577,11 @@ public:
         if (hi <= x) return rq - lq;
 
         return l->lte(pref[lq], pref[rq], x)
-             + r->lte(
-                   lq - pref[lq],
-                   rq - pref[rq],
-                   x
-               );
+            + r->lte(
+                lq - pref[lq],
+                rq - pref[rq],
+                x
+            );
     }
 
     // count elements in [low, high]
@@ -525,11 +590,11 @@ public:
         if (low <= lo && hi <= high) return rq - lq;
 
         return l->range_count(pref[lq], pref[rq], low, high)
-             + r->range_count(
-                   lq - pref[lq],
-                   rq - pref[rq],
-                   low, high
-               );
+            + r->range_count(
+                lq - pref[lq],
+                rq - pref[rq],
+                low, high
+            );
     }
 };
 
@@ -598,7 +663,7 @@ vvll build_adj(ll n, ll m, ll base=1,bool directed = false){
 }
 
 template <typename T>
-V<V<T>> readGrid(int H, int W, bool withSpaces = false) {
+V<V<T>> readGrid(ll H, ll W, bool withSpaces = false) {
     V<V<T>> grid(H, V<T>(W));
     for (int i = 0; i < H; i++) {
         if (is_same<T, char>::value && !withSpaces) {
@@ -839,6 +904,49 @@ struct SCC
         }
     }
 };
+// topo sort (Kahn's Algorithm)
+bool topo_sort(const vvll& dag)
+{
+    ll k = dag.size();
+    vll indeg(k, 0);
+
+    // compute indegrees
+    rep(u,0,k)
+    {
+        each(v, dag[u])
+        {
+            indeg[v]++;
+        }
+    }
+
+    queue<ll> q;
+    rep(i,0,k)
+    {
+        if (indeg[i] == 0)
+            q.push(i);
+    }
+
+    vll topo;
+
+    while (!q.empty())
+    {
+        ll u = q.front(); q.pop();
+        topo.pb(u);
+
+        each(v, dag[u])
+        {
+            if (--indeg[v] == 0)
+                q.push(v);
+        }
+    }
+
+    // Optional safety check
+    // if ((ll)topo.size() != k) -> cycle exists (should not happen for SCC DAG)
+
+    return ((ll)topo.size() == k);
+}
+
+
 // DSU Algorithm
 // Classic DSU (Union-Find)
 struct DSU {
@@ -979,44 +1087,6 @@ struct WDSU {
     }
 };
 
-
-
-/*Math Algorithms*/
-// fast modular exponentiation
-ll modpow(ll base, ll exp, ll mod)
-{
-    ll result = 1;
-    base %= mod;
-    while (exp > 0)
-    {
-        if (exp & 1)
-            result = (result * base) % mod;
-        base = (base * base) % mod;
-        exp >>= 1;
-    }
-    return result;
-}
-//floor div template
-template <typename T>
-T floor(T a, T b) {
-return a / b - (a % b && (a ^ b) < 0);
-}
-//ceil div template
-template <typename T>
-T ceil(T x, T y) {
-return floor(x + y - 1, y);
-}
-//balanced modulo or Euclidean modulo (out normal modulo)
-template <typename T>
-T bmod(T x, T y) {
-return x - y * floor(x, y);
-}
-// gives a quotient reminder pair for a div
-template <typename T>
-pair<T, T> divmod(T x, T y) {
-T q = floor(x, y);
-return {q, x - q * y};
-}
 
 //primes upto
 const int residues[] = {1, 7, 11, 13, 17, 19, 23, 29};
@@ -1160,8 +1230,8 @@ struct modint {
         ll t; is >> t; x = modint(t); return is;
     }
 };
-static constexpr ll MOD = 998244353;
-using mint = modint<MOD>;
+
+using mint = modint<MOD9>;
 
 /*Binomial Templates*/
 vector<mint> fact, invfact;
@@ -1180,6 +1250,11 @@ void init_nCr(ll N) {
 mint nCr(ll n, ll r) {
     if (r < 0 || r > n) return 0;
     return fact[n] * invfact[r] * invfact[n - r];
+}
+
+ll manh (ll x1, ll x2, ll y1 , ll y2)
+{
+    return (x1 - x2) * (x1 - x2) + (y1 - y2) * ( y1 - y2);
 }
 
 int main()

@@ -61,9 +61,6 @@ freopen((s + ".out").c_str(), "w", stdout);
 #define svec(type, n, v) vector<type> v(n); scan(v)
 #define s1vll(n,v) vll v(n + 1); rep(i, 1, n + 1) cin >> v[i];
 #define s1vii(n,v) vii v(n + 1); rep(i, 1, n + 1) cin >> v[i];
-#define uniq(x) x.erase(unique(all(x)), x.end()), x.shrink_to_fit()
-#define asc(x) sort(all(x))
-#define desc(x) sort(all(x),greater<>())
 #define fi first
 #define se second
 // ----------------------------------------------------------------------------------------
@@ -1353,11 +1350,6 @@ void init_nCr(ll N) {
 mint nCr(ll n, ll r) {
     if (r < 0 || r > n) return 0;
     return fact[n] * invfact[r] * invfact[n - r];
-}
-
-ll manh (ll x1, ll x2, ll y1 , ll y2)
-{
-    return (x1 - x2) * (x1 - x2) + (y1 - y2) * ( y1 - y2);
 }
 
 int main()

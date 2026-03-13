@@ -400,6 +400,30 @@ void __print(const std::tuple<Args...>& t) {
     }, t);
     cout << ")";
 }
+// Debug Helper
+template<typename T>
+void print_stack(std::stack<T> s)
+{
+    std::cout << "[ ";
+    while (!s.empty())
+    {
+        std::cout << s.top() << " ";
+        s.pop();
+    }
+    std::cout << "]\n";
+}
+
+template<typename T>
+void print_queue(std::queue<T> q)
+{
+    std::cout << "[ ";
+    while (!q.empty())
+    {
+        std::cout << q.front() << " ";
+        q.pop();
+    }
+    std::cout << "]\n";
+}
 // ──────────────────────────────────────────────────────────────────────────
 // Bitwise functions
 // ──────────────────────────────────────────────────────────────────────────

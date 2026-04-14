@@ -75,11 +75,8 @@ freopen((s + ".out").c_str(), "w", stdout);
 #define rub(v,target) upper_bound(rall(v), target) //Equivalent to finding the largest element smaller than or equal to target
 #define ubset(s,target) s.upper_bound(target)
 // ----------------------------------------------------------------------------------------
-#define digitcount(n) ((n) == 0 ? 1 : (int)log10(abs(n)) + 1)
-// ----------------------------------------------------------------------------------------
 //string macros
 #define str(x) to_string(x)
-
 // ----------------------------------------------------------------------------------------
 const int dx4[4] = {1, 0, -1, 0};
 const int dy4[4] = {0, 1, 0, -1};
@@ -155,6 +152,14 @@ ll pow10(ll n, ll m)
     rep(i,1,n + 1) pw[i] = (pw[i - 1] * 10) % m;
 
     return pw[n];
+}
+ll digitcount(long long x) {
+    int cnt = 0;
+    while (x > 0) {
+        cnt++;
+        x /= 10;
+    }
+    return cnt;
 }
 /*Math Algorithms*/
 // fast modular exponentiation
@@ -1352,6 +1357,6 @@ mint nCr(ll n, ll r) {
     return fact[n] * invfact[r] * invfact[n - r];
 }
 
-int main()
+int main() 
 {
 }

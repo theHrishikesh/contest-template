@@ -41,7 +41,6 @@ freopen((s + ".out").c_str(), "w", stdout);
 #define rall3(i,a,b) rbegin(i)+a,rbegin(i)+b
 #define rall(...) overload3(__VA_ARGS__,rall3,rall2,rall1)(__VA_ARGS__)
 #define len(x) (ll)(x).size()
-#define sum(...) accumulate(all(__VA_ARGS__),0LL)
 #define rev(vec) reverse(vec.begin(), vec.end())
 #define elif else if
 #define pb push_back
@@ -66,14 +65,8 @@ freopen((s + ".out").c_str(), "w", stdout);
 // ----------------------------------------------------------------------------------------
 //binarySearch macros
 // ----------------------------------------------------------------------------------------
-#define lb(v,target) lower_bound(all(v), target)
-#define rlb(v,target) lower_bound(rall(v), target)
-#define lbset(s,target) s.lower_bound(target)
-#define ub(v,target) upper_bound(all(v), target)
-#define lbidx(v,target) lb(v,target)-v.begin()
-#define ubidx(v,target) ub(v,target)-v.begin()
-#define rub(v,target) upper_bound(rall(v), target) //Equivalent to finding the largest element smaller than or equal to target
-#define ubset(s,target) s.upper_bound(target)
+#define lb(A,x) (ll)(lower_bound(all(A),x)-A.begin())
+#define ub(A,x) (ll)(upper_bound(all(A),x)-A.begin())
 // ----------------------------------------------------------------------------------------
 //string macros
 #define str(x) to_string(x)
@@ -133,6 +126,7 @@ template<class T> auto vmin(const T& a){ return *min_element(all(a)); }
 template<class T> auto vmax(const T& a){ return *max_element(all(a)); }
 template<class T, class U> bool chmin(T& a, const U& b){ if(a > T(b)){ a = b; return 1; } return 0; }
 template<class T, class U> bool chmax(T& a, const U& b){ if(a < T(b)){ a = b; return 1; } return 0; }
+template <class T = ll, class S> T sum(const S &v) { return accumulate(all(v), T(0)); }
 template<typename T>
 using maxpq = priority_queue<T>;
 template<typename T>
@@ -1337,6 +1331,7 @@ struct modint {
 };
 
 using mint = modint<MOD9>;
+using vmint = vector<mint>;
 
 /*Binomial Templates*/
 vector<mint> fact, invfact;
@@ -1355,8 +1350,4 @@ void init_nCr(ll N) {
 mint nCr(ll n, ll r) {
     if (r < 0 || r > n) return 0;
     return fact[n] * invfact[r] * invfact[n - r];
-}
-
-int main() 
-{
 }

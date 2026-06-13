@@ -1,18 +1,9 @@
 #include <bits/stdc++.h>
+#include <climits>
 using namespace std;
-struct IoSetup {
-    IoSetup() {
-        cin.tie(nullptr);
-        ios::sync_with_stdio(false);
-        cout << fixed << setprecision(15);
-        cerr << fixed << setprecision(15);
-    }
-} iosetup;
+struct IoSetup {IoSetup() {cin.tie(nullptr);ios::sync_with_stdio(false);cout << fixed << setprecision(15);cerr << fixed << setprecision(15);}} iosetup;
 void setIO(string s)
-{
-freopen((s + ".in").c_str(), "r", stdin);
-freopen((s + ".out").c_str(), "w", stdout);
-}
+{freopen((s + ".in").c_str(), "r", stdin);freopen((s + ".out").c_str(), "w", stdout);}
 #define overload5(_1,_2,_3,_4,_5,name,...) name
 #define overload4(_1,_2,_3,_4,name,...) name
 #define overload3(_1,_2,_3,name,...) name
@@ -127,14 +118,10 @@ template<class T> auto vmax(const T& a){ return *max_element(all(a)); }
 template<class T, class U> bool chmin(T& a, const U& b){ if(a > T(b)){ a = b; return 1; } return 0; }
 template<class T, class U> bool chmax(T& a, const U& b){ if(a < T(b)){ a = b; return 1; } return 0; }
 template <class T = ll, class S> T sum(const S &v) { return accumulate(all(v), T(0)); }
-template<typename T>
-using maxpq = priority_queue<T>;
-template<typename T>
-using minpq = priority_queue<T, vector<T>, greater<T>>;
+template<typename T>using maxpq = priority_queue<T>;
+template<typename T> using minpq = priority_queue<T, vector<T>, greater<T>>;
 //helpers
-ll modulo(ll n, ll MOD)
-{
-    n %= MOD;
+ll modulo(ll n, ll MOD){n %= MOD;
     if (n < 0) n += MOD;
     return n;
 }
@@ -144,7 +131,6 @@ ll pow10(ll n, ll m)
     vll pw(n + 1);
     pw[0] = 1;
     rep(i,1,n + 1) pw[i] = (pw[i - 1] * 10) % m;
-
     return pw[n];
 }
 ll digitcount(long long x) {
@@ -1003,48 +989,6 @@ struct SCC
         }
     }
 };
-// topo sort (Kahn's Algorithm)
-bool topo_sort(const vvll& dag)
-{
-    ll k = dag.size();
-    vll indeg(k, 0);
-
-    // compute indegrees
-    rep(u,0,k)
-    {
-        each(v, dag[u])
-        {
-            indeg[v]++;
-        }
-    }
-
-    queue<ll> q;
-    rep(i,0,k)
-    {
-        if (indeg[i] == 0)
-            q.push(i);
-    }
-
-    vll topo;
-
-    while (!q.empty())
-    {
-        ll u = q.front(); q.pop();
-        topo.pb(u);
-
-        each(v, dag[u])
-        {
-            if (--indeg[v] == 0)
-                q.push(v);
-        }
-    }
-
-    // Optional safety check
-    // if ((ll)topo.size() != k) -> cycle exists (should not happen for SCC DAG)
-
-    return ((ll)topo.size() == k);
-}
-
 
 // DSU Algorithm
 // Classic DSU (Union-Find)
@@ -1251,6 +1195,20 @@ vll all_divisors(ll n) {
     return divs;
 }
 
+vpll rle(vll &a)
+{
+    vpll res;
+    each(x,a)
+    {
+        if (res.empty() || res.back().first != x)
+            res.pb({x, 1});
+        else
+            res.back().second++;
+    }
+
+    return res;
+}
+
 string to_base(ll a,ll b)
 {
 if (b<2 || b>36) throw invalid_argument("base out of range");
@@ -1320,6 +1278,16 @@ struct modint {
     constexpr modint operator-(modint o) const noexcept { return modint(*this) -= o; }
     constexpr modint operator*(modint o) const noexcept { return modint(*this) *= o; }
     constexpr modint operator/(modint o) const noexcept { return modint(*this) /= o; }
+    constexpr modint& operator++() noexcept {
+        *this += 1;
+        return *this;
+    }
+    
+    constexpr modint operator++(int) noexcept {
+        modint old = *this;
+        ++(*this);
+        return old;
+    }
 
     // I/O
     friend ostream& operator<<(ostream& os, modint x) {
@@ -1350,4 +1318,9 @@ void init_nCr(ll N) {
 mint nCr(ll n, ll r) {
     if (r < 0 || r > n) return 0;
     return fact[n] * invfact[r] * invfact[n - r];
+}
+
+int main()
+{
+
 }
